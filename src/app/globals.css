@@ -1,0 +1,337 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #eff1f5;
+  --foreground: #4c4f69;
+  --card: #eff1f5;
+  --card-foreground: #4c4f69;
+  --popover: #eff1f5;
+  --popover-foreground: #4c4f69;
+  --primary: #1e66f5;
+  --primary-foreground: #eff1f5;
+  --secondary: #ccd0da;
+  --secondary-foreground: #4c4f69;
+  --muted: #ccd0da;
+  --muted-foreground: #5c5f77;
+  --accent: #ccd0da;
+  --accent-foreground: #4c4f69;
+  --destructive: #d20f39;
+  --border: #bcc0cc;
+  --input: #bcc0cc;
+  --ring: #4c4f69;
+  --chart-1: #d20f39;
+  --chart-2: #179299;
+  --chart-3: #1e66f5;
+  --chart-4: #df8e1d;
+  --chart-5: #40a02b;
+  --sidebar: #e6e9ef;
+  --sidebar-foreground: #4c4f69;
+  --sidebar-primary: #1e66f5;
+  --sidebar-primary-foreground: #eff1f5;
+  --sidebar-accent: #eff1f5;
+  --sidebar-accent-foreground: #4c4f69;
+  --sidebar-border: #bcc0cc;
+  --sidebar-ring: #bcc0cc;
+}
+
+.dark {
+  --background: #1e1e2e;
+  --foreground: #cdd6f4;
+  --card: #1e1e2e;
+  --card-foreground: #cdd6f4;
+  --popover: #1e1e2e;
+  --popover-foreground: #cdd6f4;
+  --primary: #89b4fa;
+  --primary-foreground: #1e1e2e;
+  --secondary: #313244;
+  --secondary-foreground: #cdd6f4;
+  --muted: #313244;
+  --muted-foreground: #bac2de;
+  --accent: #313244;
+  --accent-foreground: #cdd6f4;
+  --destructive: #f38ba8;
+  --border: #45475a;
+  --input: #45475a;
+  --ring: #cdd6f4;
+  --chart-1: #f38ba8;
+  --chart-2: #94e2d5;
+  --chart-3: #89b4fa;
+  --chart-4: #f9e2af;
+  --chart-5: #a6e3a1;
+  --sidebar: #181825;
+  --sidebar-foreground: #cdd6f4;
+  --sidebar-primary: #89b4fa;
+  --sidebar-primary-foreground: #1e1e2e;
+  --sidebar-accent: #1e1e2e;
+  --sidebar-accent-foreground: #cdd6f4;
+  --sidebar-border: #45475a;
+  --sidebar-ring: #45475a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================================================
+   LIGHT-MODE TEXT READABILITY: CENTRALLY MANAGED
+   ----------------------------------------------------------------------------
+   WHY: Each studio themes its text with bright Tailwind accent shades
+   (text-{hue}-300/400/500 + opacity variants) chosen for the DARK background.
+   On the light Catppuccin Latte background these are too light to read, and the
+   panel brightness slider only adjusts BACKGROUND vars (never text). Here we
+   remap those accent text classes, in LIGHT MODE ONLY (html:not(.dark)), to a
+   darker, readable shade of the SAME hue, plus the washed-out neutral
+   muted-foreground/foreground opacity variants.
+
+   INTENTIONALLY UNTOUCHED:
+     - text-white (correct as light text on solid colored buttons/badges)
+     - very-light -100/-200 accent shades (light text on colored backgrounds)
+     - all bg-* / border-* utilities (color/identity preserved)
+     - hover:/focus: text variants (transient; left bright - see note file)
+
+   HOW TO ADJUST: edit a hue value in the :root block below - every class mapped
+   to it updates app-wide. These rules are UNLAYERED so they reliably win over
+   Tailwind's @layer utilities, and the html:not(.dark) scope leaves DARK MODE
+   completely unaffected.
+
+   FULL MAP + every affected file/location (single source of truth):
+     F: 0_AI_Notes/LIGHT_MODE_TEXT_MAP.md
+   ============================================================================ */
+:root {
+  /* Accent text: readable -700-ish shade of each hue (edit to taste) */
+  --lm-red: #b91c1c;
+  --lm-rose: #be123c;
+  --lm-orange: #c2410c;
+  --lm-amber: #b45309;
+  --lm-yellow: #a16207;
+  --lm-green: #15803d;
+  --lm-emerald: #047857;
+  --lm-teal: #0f766e;
+  --lm-cyan: #0e7490;
+  --lm-sky: #0369a1;
+  --lm-blue: #1d4ed8;
+  --lm-indigo: #4338ca;
+  --lm-violet: #6d28d9;
+  --lm-purple: #7e22ce;
+  --lm-fuchsia: #a21caf;
+  --lm-pink: #be185d;
+  --lm-zinc: #52525b;
+  /* Neutral body/label text: Catppuccin Latte text ramp (palette-true) */
+  --lm-text-strong: #4c4f69; /* Latte Text     */
+  --lm-text-muted:  #5c5f77; /* Latte Subtext1 */
+  --lm-text-faint:  #6c6f85; /* Latte Subtext0 */
+}
+
+/* ── Accent text (base + opacity variants), light mode only ── */
+html:not(.dark) :is(.text-red-300, .text-red-400, .text-red-300\/80, .text-red-400\/30, .text-red-400\/40, .text-red-400\/60, .text-red-400\/70, .text-red-400\/80, .text-red-400\/90) { color: var(--lm-red); }
+html:not(.dark) :is(.text-rose-300, .text-rose-400, .text-rose-300\/40, .text-rose-300\/50, .text-rose-300\/60, .text-rose-300\/70, .text-rose-300\/80, .text-rose-400\/40, .text-rose-400\/50, .text-rose-400\/60, .text-rose-400\/70, .text-rose-400\/80, .text-rose-400\/90) { color: var(--lm-rose); }
+html:not(.dark) :is(.text-orange-300, .text-orange-400, .text-orange-300\/80, .text-orange-400\/40, .text-orange-400\/50, .text-orange-400\/60, .text-orange-400\/70, .text-orange-400\/80) { color: var(--lm-orange); }
+html:not(.dark) :is(.text-amber-300, .text-amber-400, .text-amber-300\/70, .text-amber-300\/80, .text-amber-400\/30, .text-amber-400\/40, .text-amber-400\/50, .text-amber-400\/60, .text-amber-400\/70, .text-amber-400\/80, .text-amber-400\/90) { color: var(--lm-amber); }
+html:not(.dark) :is(.text-yellow-400, .text-yellow-500, .text-yellow-400\/60) { color: var(--lm-yellow); }
+html:not(.dark) :is(.text-green-400, .text-green-500, .text-green-400\/70, .text-green-400\/80, .text-green-400\/90) { color: var(--lm-green); }
+html:not(.dark) :is(.text-emerald-300, .text-emerald-400, .text-emerald-400\/30, .text-emerald-400\/40, .text-emerald-400\/50, .text-emerald-400\/60, .text-emerald-400\/70, .text-emerald-400\/80) { color: var(--lm-emerald); }
+html:not(.dark) :is(.text-teal-300, .text-teal-400, .text-teal-500, .text-teal-300\/50, .text-teal-300\/60, .text-teal-300\/80, .text-teal-400\/50, .text-teal-400\/60, .text-teal-400\/70, .text-teal-400\/80, .text-teal-500\/70) { color: var(--lm-teal); }
+html:not(.dark) :is(.text-cyan-300, .text-cyan-400, .text-cyan-500, .text-cyan-600, .text-cyan-300\/50, .text-cyan-300\/70, .text-cyan-300\/80, .text-cyan-300\/90, .text-cyan-400\/40, .text-cyan-400\/50, .text-cyan-400\/60, .text-cyan-400\/70, .text-cyan-400\/80, .text-cyan-400\/90, .text-cyan-500\/60) { color: var(--lm-cyan); }
+html:not(.dark) :is(.text-sky-300, .text-sky-400, .text-sky-400\/40, .text-sky-400\/50, .text-sky-400\/60, .text-sky-400\/70, .text-sky-400\/80, .text-sky-400\/90) { color: var(--lm-sky); }
+html:not(.dark) :is(.text-blue-300, .text-blue-400, .text-blue-300\/50, .text-blue-300\/60, .text-blue-300\/70, .text-blue-400\/60, .text-blue-400\/70, .text-blue-400\/80) { color: var(--lm-blue); }
+html:not(.dark) :is(.text-indigo-300, .text-indigo-400, .text-indigo-400\/40, .text-indigo-400\/60, .text-indigo-400\/70) { color: var(--lm-indigo); }
+html:not(.dark) :is(.text-violet-300, .text-violet-400, .text-violet-300\/50, .text-violet-300\/60, .text-violet-300\/80, .text-violet-400\/40, .text-violet-400\/50, .text-violet-400\/60, .text-violet-400\/70, .text-violet-400\/80) { color: var(--lm-violet); }
+html:not(.dark) :is(.text-purple-300, .text-purple-400, .text-purple-300\/60, .text-purple-300\/80, .text-purple-400\/50, .text-purple-400\/60, .text-purple-400\/70, .text-purple-400\/80) { color: var(--lm-purple); }
+html:not(.dark) :is(.text-fuchsia-300, .text-fuchsia-400, .text-fuchsia-300\/70, .text-fuchsia-400\/40, .text-fuchsia-400\/50, .text-fuchsia-400\/60, .text-fuchsia-400\/70, .text-fuchsia-400\/80) { color: var(--lm-fuchsia); }
+html:not(.dark) :is(.text-pink-300, .text-pink-400, .text-pink-400\/70) { color: var(--lm-pink); }
+html:not(.dark) :is(.text-zinc-400) { color: var(--lm-zinc); }
+
+/* ── Neutral body/label text, restore readable contrast for faded tokens ── */
+html:not(.dark) :is(.text-muted-foreground\/30, .text-muted-foreground\/40, .text-muted-foreground\/50) { color: var(--lm-text-faint); }
+html:not(.dark) :is(.text-muted-foreground\/60, .text-muted-foreground\/70, .text-muted-foreground\/80) { color: var(--lm-text-muted); }
+html:not(.dark) :is(.text-foreground\/60, .text-foreground\/70, .text-foreground\/80) { color: var(--lm-text-strong); }
+
+/* ── LoRA "Scan" button: spinning rainbow pinwheel ─────────────────────────
+   Replaces the old brightness pulse. A conic-gradient rainbow rotates behind a
+   static mask shaped like the lucide ScanLine icon, so the rainbow sweeps along
+   the icon's strokes (a pinwheel), finished with a soft violet bloom. The mask
+   lives on the element (static) while the ::before child rotates, so only the
+   colours spin: the icon outline stays put. Chromium-only (Electron shell). */
+.veksnap-scan-rainbow {
+  --veksnap-scan-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='white'%20stroke-width='2.25'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3%207V5a2%202%200%200%201%202-2h2'/%3E%3Cpath%20d='M17%203h2a2%202%200%200%201%202%202v2'/%3E%3Cpath%20d='M21%2017v2a2%202%200%200%201-2%202h-2'/%3E%3Cpath%20d='M7%2021H5a2%202%200%200%201-2-2v-2'/%3E%3Cpath%20d='M7%2012h10'/%3E%3C/svg%3E");
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  -webkit-mask: var(--veksnap-scan-mask) center / contain no-repeat;
+          mask: var(--veksnap-scan-mask) center / contain no-repeat;
+  filter: drop-shadow(0 0 3px rgba(168, 130, 255, 0.9));
+}
+.veksnap-scan-rainbow::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from 0deg,
+    #ff3b3b, #ff9e00, #ffe600, #38e54d, #00c2ff, #7a5cff, #ff2fd0, #ff3b3b
+  );
+  animation: veksnap-scan-spin 1s linear infinite;
+}
+@keyframes veksnap-scan-spin { to { transform: rotate(360deg); } }
+
+/* Indeterminate progress sweep: used by the Library preview-fetch bar. */
+@keyframes veksnap-indeterminate {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(120%); }
+  100% { transform: translateX(300%); }
+}
+
+/* ── Neon scrollbars (Chromium / Electron) ──────────────────────────────────
+   Replaces the stock gray bars with a slim, rounded, translucent thumb tinted
+   to the app's blue --primary, with a soft glow on hover. Track stays invisible
+   so the bar reads as a floating neon pill. Unifies scroll UI across every panel. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--primary) 60%, transparent) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--primary) 85%, transparent);
+  box-shadow: inset 0 0 6px color-mix(in srgb, var(--primary) 70%, transparent);
+}
+*::-webkit-scrollbar-thumb:active {
+  background-color: var(--primary);
+}
+*::-webkit-scrollbar-corner { background: transparent; }
+@media (prefers-reduced-motion: reduce) {
+  .veksnap-scan-rainbow::before { animation-duration: 3s; }
+}
+
+/* ── Continuum "Generate" button: breathing neon-blue glow (enabled only) ────
+   Applied only when the master Generate button is enabled (config ready).
+   Technique adapted from the "Hover Glow" reference: a blurred gradient sits
+   BEHIND the button (z-index:-1) and its background-position sweeps - NO
+   transform/rotation, so the glow never grows a giant bounding box or expands
+   the scroll area (the earlier "rotating clock handle" bug). A gentle breathing
+   box-shadow adds the professional heartbeat bloom. Single-hue blue, keyed to
+   the app accent. The button's own opaque-ish fill masks the gradient centre so
+   only a soft halo shows around the edges. */
+@keyframes vekGenerateBreathe {
+  0%, 100% { box-shadow: 0 0 8px 0 rgba(30, 102, 245, 0.35); }
+  50%      { box-shadow: 0 0 18px 2px rgba(30, 102, 245, 0.60); }
+}
+@keyframes vekGenerateSweep {
+  0%   { background-position: 0 50%; }
+  100% { background-position: 300% 50%; }
+}
+.vek-generate-glow {
+  position: relative;
+  z-index: 0;
+  animation: vekGenerateBreathe 2.6s ease-in-out infinite;
+}
+.vek-generate-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1e66f5, #5b9bff, #93c5fd, #5b9bff, #1e66f5);
+  background-size: 300% 100%;
+  filter: blur(7px);
+  opacity: 0.5;
+  animation: vekGenerateSweep 7s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vek-generate-glow { animation-duration: 6s; }
+  .vek-generate-glow::before { animation: none; opacity: 0.4; }
+}
+
+/* ── "Advanced" pipeline badge: breathing red-orange glow ────────────────────
+   Same technique as the Generate glow, retuned to a warm red→orange hue. Applied
+   to the "Official" pipeline toggle when the user leaves the stock recipe, marking
+   the config as "Advanced". A blurred warm gradient sweeps BEHIND the button (no
+   transform, so it never expands the scroll area) plus a gentle box-shadow heartbeat. */
+@keyframes vekAdvancedBreathe {
+  0%, 100% { box-shadow: 0 0 8px 0 rgba(255, 79, 26, 0.40); }
+  50%      { box-shadow: 0 0 18px 2px rgba(255, 122, 26, 0.70); }
+}
+@keyframes vekAdvancedSweep {
+  0%   { background-position: 0 50%; }
+  100% { background-position: 300% 50%; }
+}
+.vek-advanced-glow {
+  position: relative;
+  z-index: 0;
+  animation: vekAdvancedBreathe 2.2s ease-in-out infinite;
+}
+.vek-advanced-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff3b1a, #ff7a1a, #ffb347, #ff7a1a, #ff3b1a);
+  background-size: 300% 100%;
+  filter: blur(6px);
+  opacity: 0.6;
+  animation: vekAdvancedSweep 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vek-advanced-glow { animation-duration: 5s; }
+  .vek-advanced-glow::before { animation: none; opacity: 0.45; }
+}

@@ -1,0 +1,32 @@
+LTX-2 (LIGHTRICKS): LICENSE REFERENCE
+======================================
+
+Component:   LTX-2 video generation model(s).
+Licensor:    Lightricks Ltd.
+License:     LTX-2 Community License / End User License Agreement (EULA),
+             including its Acceptable Use terms ("Attachment A").
+
+Canonical sources (authoritative text: controls over this summary):
+  - Lightricks LTX model hub: https://huggingface.co/Lightricks
+  - The LTX-2 Community License / EULA and Attachment A, as published by
+    Lightricks with the model release.
+
+REDISTRIBUTION NOTE
+-------------------
+Vek-Snap does NOT redistribute LTX-2 model weights. They are obtained by the
+user (or by the installer with the user's consent) directly from Lightricks'
+official distribution, where the LTX-2 Community License / EULA and Attachment A
+are presented and must be accepted.
+
+COMMERCIAL-SCALE NOTICE (IMPORTANT)
+-----------------------------------
+The LTX-2 Community License requires a SEPARATE commercial license from
+Lightricks for entities whose total annual revenue exceeds the threshold stated
+in the license (the ">= USD $10,000,000 annual revenue" clause). If you or your
+organization meet or exceed that threshold, you are responsible for obtaining
+the appropriate commercial license directly from Lightricks. The controlling
+text in the official LTX-2 Community License governs in all cases.
+
+(If a future Vek-Snap build bundles LTX-2 weights directly, this reference file
+must be replaced with the complete, verbatim LTX-2 Community License / EULA and
+Attachment A as published by Lightricks.)
