@@ -139,14 +139,17 @@ code-signed.
 ![Timeline editor](images/timeline-editor.webp)
 Timeline editor: assemble clips, sync audio, and export finished video, all offline.
 
+<br />
 
 ![Resource hub (library)](images/resource-hub.webp)
 Resource hub: your organized library of models and renders, with in-app video playback and presentation controls.
 
+<br />
 
 ![LTX Continuum](images/ltx-continuum.webp)
 LTX Continuum: continuous long-form video generation with scene-to-scene continuity.
 
+<br />
 
 ![Image generation and management](images/image-generation.webp)
 Image generation and management: batch prompts, live previews, and per-image metadata with quick actions.
